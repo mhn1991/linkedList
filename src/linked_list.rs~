@@ -1,0 +1,34 @@
+#[derive(Debug)]
+pub struct LinkedList<T>{
+    head: Option<Box<Node<T>>>,
+    len: usize
+}
+#[derive(Debug)]
+pub struct Node<T>{
+    elem:T,
+    next:Option<Box<Node<T>>>
+}
+
+impl<T> LinkedList<T>{
+    pub fn new()->LinkedList<T>{
+        LinkedList{
+            head: None,
+            len:0
+        }
+    }
+
+    pub fn push(&mut self,element:T){
+        let new_node=Box::new(Node{
+            elem:element,
+            next: self.head.take()
+        });
+        self.head = Some(new_node)
+    }
+
+    pub fn pop(&mut self)->Option<T>{
+        let node = self.head.take();
+        self.head = node.take().next;
+        Some(node.unwrap().elem)
+    }
+
+}
